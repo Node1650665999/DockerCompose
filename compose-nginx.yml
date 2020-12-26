@@ -3,16 +3,16 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - ./data/www:/data/www
-      - ./nginx/logs:/var/log/nginx
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/conf/vhost:/etc/nginx/conf.d
+      - ${WWW_LOCAL_DIR}:/data/www
+      - ${NGINX_LOG}:/var/log/nginx
+      - ${NGINX_CONF}:/etc/nginx/nginx.conf
+      - ${NGINX_VHOST}:/etc/nginx/conf.d
     working_dir: /data/www
     expose:
-      - "80"
-      - "443"
+      - ${NGINX_HTTP_PORT}
+      - ${NGINX_HTTPS_PORT}
     ports:
-      - "81:80"
-      - "443:443"
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
     restart: always
     command: nginx-debug -g 'daemon off;'

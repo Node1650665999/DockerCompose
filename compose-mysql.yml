@@ -1,17 +1,20 @@
 version: '3.2'
 services:
   mysql:
-    build: ./mysql
+    build:
+      context: ./mysql
+      args:
+        MYSQL_IMAGE: ${MYSQL_IMAGE}
     expose:
-      - "3307"
+      - ${MYSQL_PORT}
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT}:3306"
     volumes:
-      - ./mysql/data:/var/lib/mysql
-      - ./mysql/conf:/etc/mysql
+      - ${MYSQL_DATA}:/var/lib/mysql
+      - ${MYSQL_CONF}:/etc/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      TZ: "Asia/Shanghai"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: ${TZ}
     restart: always
     command: --character-set-server=utf8
 

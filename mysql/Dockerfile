@@ -1,4 +1,5 @@
-FROM mysql:5.7
+ARG MYSQL_IMAGE
+FROM ${MYSQL_IMAGE}
 
 #  set timezome
 ENV TZ=Asia/Shanghai

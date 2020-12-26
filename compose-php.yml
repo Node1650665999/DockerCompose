@@ -1,15 +1,17 @@
 version: '3.2'
 services:
   php:
-    #    container_name: myphp
-    build: ./php
+    build:
+      context: ./php
+      args:
+        PHP_IMAGE: ${PHP_IMAGE}
     ports:
-      - "9000:9000"
+      - "${PHP_FPM_PORT}:9000"
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=${TZ}
     volumes:
-      - ./data/www:/data/www:rw
-      - ./php/conf:/usr/local/etc:rw
+      - ${WWW_LOCAL_DIR}:/data/www:rw
+      - ${PHP_CONF}:/usr/local/etc:rw
     working_dir: /data/www
     restart: always
     command: php-fpm

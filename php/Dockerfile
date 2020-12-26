@@ -1,4 +1,5 @@
-FROM php:7.2-fpm
+ARG PHP_IMAGE
+FROM ${PHP_IMAGE:-'php:7.2-fpm'}
 #  设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
