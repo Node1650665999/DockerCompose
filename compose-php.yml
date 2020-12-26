@@ -1,0 +1,15 @@
+version: '3.2'
+services:
+  php:
+    #    container_name: myphp
+    build: ./php
+    ports:
+      - "9000:9000"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/www:/data/www:rw
+      - ./php/conf:/usr/local/etc:rw
+    working_dir: /data/www
+    restart: always
+    command: php-fpm

@@ -1,48 +1,29 @@
 FROM php:7.2-fpm
-MAINTAINER goozp "gzp@goozp.com"
-
 #  设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-#  更新安装依赖包和PHP核心拓展
-RUN apt-get update && apt-get install -y \
-        git \
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
+    && echo 'deb http://mirrors.aliyun.com/debian/ buster main non-free contrib' > /etc/apt/sources.list \
+    && echo 'deb http://mirrors.aliyun.com/debian-security buster/updates main' >> /etc/apt/sources.list \
+    && echo 'deb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib' >> /etc/apt/sources.list \
+    && echo 'deb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib' >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
+        libmagickwand-dev \
+        libmcrypt-dev \
+    && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
-        && docker-php-ext-install zip \
-        && docker-php-ext-install pdo_mysql \
-        && docker-php-ext-install opcache \
-        && docker-php-ext-install mysqli \
-        && rm -r /var/lib/apt/lists/*
-
-#  将预先下载好的拓展包从宿主机拷贝进去
-COPY ./pkg/redis.tgz /home/redis.tgz
-COPY ./pkg/cphalcon.tar.gz /home/cphalcon.tar.gz
-
-#  安装 PECL 拓展，这里我们安装的是Redis
-RUN pecl install /home/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
-
-#  安装第三方拓展，这里是 Phalcon 拓展
-RUN cd /home \
-    && tar -zxvf cphalcon.tar.gz \
-    && mv cphalcon-* phalcon \
-    && cd phalcon/build \
-    && ./install \
-    && echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
-
-#  安装 Composer
-ENV COMPOSER_HOME /root/composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
-
-RUN rm -f /home/redis.tgz \
-        rm -f /home/cphalcon.tar.gz
+    && docker-php-ext-install mysqli \
+    && pecl install imagick-3.4.4 && pecl install mcrypt-1.0.2 && pecl install redis-5.1.1 \
+    && pecl install xdebug-2.7.2 && pecl install swoole-4.4.3 \
+    && docker-php-ext-enable imagick mcrypt redis xdebug swoole \
+    && curl -sS https://getcomposer.org/installer |php -- --install-dir=/usr/local/bin --filename=composer
+    && docker-php-source delete \
+    && rm -r /tmp/* /var/cache/* /var/www/html/*
 
 WORKDIR /data
-
-#  Write Permission
-RUN usermod -u 1000 www-data

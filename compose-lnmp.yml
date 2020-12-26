@@ -1,0 +1,25 @@
+version: '3.2'
+services:
+  php:
+     extends:
+       file: compose-php.yml
+       service: php
+
+  nginx:
+    extends:
+      file: compose-nginx.yml
+      service: nginx
+    depends_on:
+      - php
+    links:
+      - php
+
+  mysql:
+    extends:
+      file: compose-mysql.yml
+      service: mysql
+
+
+
+
+

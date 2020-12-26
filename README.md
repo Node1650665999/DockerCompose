@@ -178,7 +178,7 @@ db:
   image: postgres
 ```
 注意： 
-> extends不会继承links和volumes_from中定义的容器和数据卷资源。
+> extends不会继承 links、depends_on、volumes_from 中定义的容器和数据卷资源。
 
 一般情况下， 推荐在基础模板中只定义一些可以共享的镜像和环境变量， 在扩展模板中
 具体指定应用变量、链接、数据卷等信息。

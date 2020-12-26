@@ -1,3 +1,9 @@
 .idea
-data/
+/data/
+/mysql/conf/
+/mysql/logs/
+/mysql/data/
+/nginx/logs/
+/php/logs/
+/php/conf/
 
