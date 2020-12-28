@@ -1,6 +1,6 @@
 # docker-compose 
 
-关于docker-compose 的教程见[这里](./compose-tutorial.md)。
+关于docker-compose 的教程见[这里](./tutorial.md)。
 
 ## 环境变量
 在本项目根目录下每个单独的服务都已拆成独立的 `compose-xxx.yml` 文件。
