@@ -3,7 +3,7 @@
 关于docker-compose 的教程见[这里](./compose-tutorial.md)。
 
 ## 环境变量
-在本项目根目录下每个单独的服务都已拆成独立的 compose-xxx.yml 文件。
+在本项目根目录下每个单独的服务都已拆成独立的 `compose-xxx.yml` 文件。
 
 例如 compose-nginx.yml :
 ```shell script
@@ -77,7 +77,7 @@ docker-compose --env-file .env  -f compose-nginx.yml up -d
 
 
 ## 服务组合
-由于 docker-compose 支持服务继承，这样我们基于单个 compose 服务，通过继承组合的方式就可以构造出一个聚合服务。
+由于 docker-compose 支持服务 `extends`，这样我们基于单个 compose 服务，通过继承组合的方式就可以构造出一个聚合服务。
 
 例如构建一个 [lnmp](./compose-lnmp.yml) 服务：
 ```shell script
