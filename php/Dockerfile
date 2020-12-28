@@ -1,5 +1,5 @@
-ARG PHP_IMAGE
-FROM ${PHP_IMAGE:-'php:7.2-fpm'}
+FROM php:7.2-fpm
+
 #  设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -23,8 +23,8 @@ RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
     && pecl install imagick-3.4.4 && pecl install mcrypt-1.0.2 && pecl install redis-5.1.1 \
     && pecl install xdebug-2.7.2 && pecl install swoole-4.4.3 \
     && docker-php-ext-enable imagick mcrypt redis xdebug swoole \
-    && curl -sS https://getcomposer.org/installer |php -- --install-dir=/usr/local/bin --filename=composer
     && docker-php-source delete \
-    && rm -r /tmp/* /var/cache/* /var/www/html/*
+    && rm -r /tmp/* /var/cache/* \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /data

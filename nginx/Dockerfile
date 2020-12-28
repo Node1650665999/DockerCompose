@@ -1,4 +1,5 @@
-FROM nginx:1.19
+ARG NGINX_IMAGE
+FROM ${NGINX_IMAGE:-'nginx:1.19'}
 
 #  set timezome
 ENV TZ=Asia/Shanghai

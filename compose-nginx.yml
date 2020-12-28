@@ -1,7 +1,10 @@
 version: '3.2'
 services:
   nginx:
-    build: ./nginx
+    build:
+      context: ./nginx
+      args:
+        - NGINX_IMAGE=${NGINX_IMAGE}
     volumes:
       - ${WWW_LOCAL_DIR}:/data/www
       - ${NGINX_LOG}:/var/log/nginx
